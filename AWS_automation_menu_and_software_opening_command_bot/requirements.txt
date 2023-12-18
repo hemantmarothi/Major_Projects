@@ -1,0 +1,5 @@
+boto3==1.18.78
+pyttsx3==2.90
+SpeechRecognition==3.8.1
+google-api-python-client==2.24.0
+pyaudio==0.2.11
