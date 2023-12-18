@@ -1,0 +1,99 @@
+/* Custom CSS for centering the image preview and setting a background image */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
+
+body {
+    background-image: url('background.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center top;
+    /* Adjust the vertical position */
+    margin: 0;
+    padding: 0;
+}
+
+/* Custom CSS for the navbar */
+.navbar {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    margin: 0 auto;
+    /* Center the text horizontally */
+    display: table;
+    width: auto;
+    font-family: 'Ubuntu', sans-serif;
+    /* Allow the text to take up the necessary space */
+}
+
+/* Custom CSS for the container */
+.container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    /* margin-top: 7px; */
+
+}
+
+/* Custom CSS for the image preview */
+.image-preview {
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 300px;
+    max-height: 300px;
+    display: inline-block;
+}
+
+.btn-hover {
+    width: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    /* margin: 20px; */
+    height: 55px;
+    text-align: center;
+    border: none;
+    background-size: 300% 100%;
+    border-radius: 50px;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.btn-hover:hover {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.btn-hover:focus {
+    outline: none;
+}
+
+.btn-hover {
+    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+    box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
+
+.back-color{
+    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+}
+
+.res {
+    font-size: 3rem;
+    margin: 1rem 0;
+    font-weight: bolder;
+    text-transform: capitalize;
+}

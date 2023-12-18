@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload with Centered Preview</title>
+    <!-- Include Bootstrap CSS via CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body style="overflow-x: hidden;">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand mx-auto" href="#"><b><h2>Crop Consult</h2></b></a>
+        </div>
+    </nav>
+
+    <div class="mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header back-color text-white">
+                        <h2 class="text-center">Upload an Image</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="http://127.0.0.1:5000/predict" method="POST" enctype="multipart/form-data">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" required>
+                                <label class="custom-file-label" for="image">Choose file</label>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn btn-primary btn-hover">Upload</button>
+                            </div>
+                        </form>
+                        <!-- Center-aligned image preview container -->
+                        <div class="image-preview mt-4">
+                            <img src="#" id="preview" alt="Preview" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery via CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript for image preview -->
+    <script>
+        // Function to display image preview
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#preview').attr('src', e.target.result).show();
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Trigger the preview when a file is selected
+        $('#image').change(function () {
+            previewImage(this);
+        });
+    </script>
+</body>
+</html>
