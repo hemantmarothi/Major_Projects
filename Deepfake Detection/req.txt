@@ -1,0 +1,6 @@
+flask
+opencv-python
+numpy
+tensorflow
+cloudinary
+moviepy

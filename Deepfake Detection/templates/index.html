@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepFake Detection</title>
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        nav {
+            width: 100vw;
+            height: 15vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-image: url(https://res.cloudinary.com/winterns/image/upload/v1705554577/deepguard/jseqwrpv99x6v7utqckd.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 100vw;
+            height: 85vh;
+        }
+
+        .options {
+            user-select: none;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            margin: 3vw;
+            color: #000;
+            background-color: #fff;
+            width: 12vw;
+            height: 7vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .raccom {
+            width: 20vw;
+        }
+
+        .rajpol {
+            width: 8vw;
+            margin-right: 5vw;
+        }
+
+        .uploaded-image {
+            border-radius: 15px;
+            width: 15vw;
+            position: absolute;
+            top: 10%;
+        }
+
+        .status {
+            color: #fff;
+            position: absolute;
+            bottom: 32%;
+            font-size: 1.2rem;
+        }
+
+        .prediction {
+            color: #fff;
+            position: absolute;
+            bottom: 26%;
+            font-size: 1.2rem;
+        }
+
+        .drag-drop {
+            border-radius: 15px;
+            padding: 5vh 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 30vw;
+            height: 40vh;
+            background-color: #fff;
+        }
+
+        .icon>svg {
+            width: 5vw;
+            height: 10vh;
+        }
+
+        .drop {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 80%;
+            border-style: dashed;
+            border-width: .3vw;
+            border-color: #000;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: gray;
+        }
+
+        .btn {
+            margin-top: -2vh;
+            color: blue;
+            font-weight: 700;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .drop>p {
+            font-size: 1.2rem;
+            margin-bottom: -2vh;
+            font-weight: 700;
+        }
+
+        .text {
+            margin-top: -2vh;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .res {
+            margin-top: -10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #0000006e;
+            width: 25%;
+            height: 70%;
+        }
+
+        .uploaded-video {
+            border-radius: 15px;
+            width: 15vw;
+            position: absolute;
+            top: 10%;
+        }
+    </style>
+    
+</head>
+<body>
+    <nav>
+        <div>
+            <img class="raccom" src="https://res.cloudinary.com/winterns/image/upload/v1705529778/deepguard/ahuxdfri7xotus30ig0l.png" alt="RACCOM">
+        </div>
+        <div>
+            <img class="rajpol" src="https://res.cloudinary.com/winterns/image/upload/v1705530699/deepguard/wrvflhhk6niewlhp6tdw.png" alt="Rajasthan Police">
+        </div>
+    </nav>
+    <div class="container">
+        {% if p_url %}
+            <img class="uploaded-image" src="{{ p_url }}" alt="Uploaded Image">
+        {% endif %}
+
+        {% if v_url %}
+            <video class="uploaded-video" width="320" height="240" controls>
+                <source src="{{ url_for('static', filename='sample.mp4') }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% endif %}
+        
+        {% if res %}
+            <div class="res">
+                {% if res %}
+                    <p class="status">Status: {{ res.status }}</p>
+                {% endif %}
+
+                {% if res and res.status == 'FAKE' %}
+                    <p class="prediction">Prediction: This image is likely fake.</p>
+                {% elif res and res.status == 'REAL' %}
+                    <p class="prediction">Prediction: This image is likely real.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <form action="/predict" method="post" enctype="multipart/form-data" style="display: none;">
+            <input type="file" name="file" id="fileInput" accept="image/*,video/*" onchange="sendData()">
+            <input type="submit" id="submitbtn1">
+        </form>
+        {% if res %}
+            <div class="chat">
+                <button class="options" id="submitbtn">+ Add File</button>
+            </div>
+        {% else %}
+            <div class="drag-drop">
+                <p class="text">Drag and Drop file to check</p>
+                <div class="drop" ondragover="allowDrop(event)" ondrop="handleDrop(event)">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="340.531" height="419.116" viewBox="0 0 340.531 419.116">
+                            <g id="files-new" clip-path="url(#clip-files-new)">
+                                <path id="Union_2" data-name="Union 2" d="M-2904.708-8.885A39.292,39.292,0,0,1-2944-48.177V-388.708A39.292,39.292,0,0,1-2904.708-428h209.558a13.1,13.1,0,0,1,9.3,3.8l78.584,78.584a13.1,13.1,0,0,1,3.8,9.3V-48.177a39.292,39.292,0,0,1-39.292,39.292Zm-13.1-379.823V-48.177a13.1,13.1,0,0,0,13.1,13.1h261.947a13.1,13.1,0,0,0,13.1-13.1V-323.221h-52.39a26.2,26.2,0,0,1-26.194-26.195v-52.39h-196.46A13.1,13.1,0,0,0-2917.805-388.708Zm146.5,241.621a14.269,14.269,0,0,1-7.883-12.758v-19.113h-68.841c-7.869,0-7.87-47.619,0-47.619h68.842v-18.8a14.271,14.271,0,0,1,7.882-12.758,14.239,14.239,0,0,1,14.925,1.354l57.019,42.764c.242.185.328.485.555.671a13.9,13.9,0,0,1,2.751,3.292,14.57,14.57,0,0,1,.984,1.454,14.114,14.114,0,0,1,1.411,5.987,14.006,14.006,0,0,1-1.411,5.973,14.653,14.653,0,0,1-.984,1.468,13.9,13.9,0,0,1-2.751,3.293c-.228.2-.313.485-.555.671l-57.019,42.764a14.26,14.26,0,0,1-8.558,2.847A14.326,14.326,0,0,1-2771.3-147.087Z" transform="translate(2944 428)" fill="var(--c-action-primary)" />
+                            </g>
+                        </svg>
+                    </span>
+                    <p>Drag file(s) here to upload.</p>
+                    <div class="btn-container">
+                        <p>Alternatively, you can select a file by</p>
+                        <span id="click-btn" class="btn">clicking here</span>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        var btn = document.getElementById('submitbtn');
+        if(btn) btn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            document.getElementById('fileInput').click();
+        });
+
+        var clickbtn = document.getElementById('click-btn');
+        if(clickbtn) clickbtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('fileInput').click();
+        })
+
+        function sendData() {
+            console.log('data sent');
+            document.getElementById('submitbtn1').click();
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+            var dropArea = document.querySelector('.drop');
+            dropArea.classList.add('drag-over');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            var dropArea = document.querySelector('.drop');
+            dropArea.classList.remove('drag-over');
+
+            var files = event.dataTransfer.files;
+
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            var fileInput = document.getElementById('fileInput');
+            var file = files[0];
+
+            // Create a FileList with the dropped file
+            var fileList = new DataTransfer();
+            fileList.items.add(file);
+
+            // Set the value of the file input
+            fileInput.files = fileList.files;
+
+            // Optionally, update the file input label to display the selected file name
+            if (file) {
+                fileInput.nextElementSibling.innerText = file.name;
+                console.log('file saved');
+            }
+
+            // Manually trigger the onchange event
+            triggerInputChange(fileInput);
+        }
+
+        function triggerInputChange(element) {
+            var event = new Event('change', { bubbles: true });
+            element.dispatchEvent(event);
+        }
+    </script>
+</body>
+</html>
